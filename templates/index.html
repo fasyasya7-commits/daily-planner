@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Planner</title>
+  <!-- Menghubungkan file CSS (tampilan) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Judul + sapaan. Isi sapaan & tanggal diisi oleh JavaScript (script.js) -->
+    <h1>📝 Daily Planner</h1>
+    <p class="sapaan" id="sapaan"></p>
+    <p class="tanggal" id="tanggal"></p>
+
+    <!-- KARTU PROGRES. Tulisan di dalam kurung kurawal ganda di bawah = tempat data dari Python ditampilkan -->
+    <div class="kartu">
+      <p><strong>{{ selesai }}</strong> dari <strong>{{ total }}</strong> tugas selesai ({{ persen }}%)</p>
+      <div class="bar-luar">
+        <!-- lebar bar mengikuti nilai persen dari Python -->
+        <div class="bar-dalam" style="width: {{ persen }}%"></div>
+      </div>
+    </div>
+
+    <!-- FORM TAMBAH TUGAS. Saat dikirim, data diterima fungsi tambah_tugas() di app.py -->
+    <form class="kartu form-tambah" action="/tambah" method="POST">
+      <input type="text" name="judul" placeholder="Apa yang ingin dikerjakan?" required>
+      <select name="prioritas">
+        <option value="rendah">Prioritas rendah</option>
+        <option value="sedang" selected>Prioritas sedang</option>
+        <option value="tinggi">Prioritas tinggi</option>
+      </select>
+      <input type="date" name="tenggat">
+      <button type="submit" class="btn-tambah">Tambah</button>
+    </form>
+
+    <!-- TOMBOL FILTER. onclick memanggil function filterTugas() di script.js -->
+    <div class="filter">
+      <button class="btn-filter aktif" onclick="filterTugas('semua', this)">Semua</button>
+      <button class="btn-filter" onclick="filterTugas('belum', this)">Belum selesai</button>
+      <button class="btn-filter" onclick="filterTugas('selesai', this)">Selesai</button>
+    </div>
+
+    <!-- DAFTAR TUGAS -->
+    <ul>
+      <!-- LOOPING di HTML: ulangi blok <li> untuk setiap tugas di daftar_tugas -->
+      {% for tugas in daftar_tugas %}
+      <li class="tugas-item prioritas-{{ tugas.prioritas }} {% if tugas.selesai %}selesai{% endif %}"
+          data-status="{% if tugas.selesai %}selesai{% else %}belum{% endif %}">
+
+        <!-- Tombol centang: mengirim ke fungsi ubah_status() di app.py -->
+        <form action="/selesai/{{ tugas.id }}" method="POST">
+          <button type="submit" class="btn-ikon">{% if tugas.selesai %}✅{% else %}⬜{% endif %}</button>
+        </form>
+
+        <div class="isi">
+          <span class="judul">{{ tugas.judul }}</span>
+          <span class="info">
+            Prioritas {{ tugas.prioritas }}
+            <!-- IF di HTML: tampilkan tenggat hanya kalau diisi -->
+            {% if tugas.tenggat %}• 📅 {{ tugas.tenggat }}{% endif %}
+            {% if tugas.terlambat %}<span class="terlambat">⚠ Terlambat</span>{% endif %}
+          </span>
+        </div>
+
+        <!-- Tombol hapus: onsubmit meminta konfirmasi dulu lewat JavaScript -->
+        <form action="/hapus/{{ tugas.id }}" method="POST" onsubmit="return konfirmasiHapus()">
+          <button type="submit" class="btn-ikon">🗑</button>
+        </form>
+      </li>
+      {% else %}
+      <!-- Bagian else ini tampil kalau daftar_tugas masih kosong -->
+      <li class="kosong">Belum ada tugas. Tambahkan tugas pertamamu di atas! ✨</li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+  <!-- File JavaScript dipasang paling bawah supaya elemen HTML sudah siap -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

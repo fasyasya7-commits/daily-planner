@@ -1,0 +1,74 @@
+/* ==========================================================
+   style.css - mengatur TAMPILAN (warna, ukuran, tata letak)
+   ========================================================== */
+
+/* Pengaturan dasar: hilangkan jarak bawaan browser */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f4f8;
+  color: #1f2933;
+  padding: 20px;
+}
+
+/* Membatasi lebar isi halaman dan menaruhnya di tengah */
+.container { max-width: 640px; margin: 0 auto; }
+
+h1 { font-size: 28px; }
+.sapaan { color: #52606d; margin-top: 4px; }
+.tanggal { color: #7b8794; font-size: 14px; margin-bottom: 16px; }
+
+/* Kartu: kotak putih dengan sudut membulat */
+.kartu {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Bar progres: bar luar = wadah abu-abu, bar dalam = isi hijau */
+.bar-luar { background: #e4e7eb; border-radius: 20px; height: 12px; margin-top: 8px; overflow: hidden; }
+.bar-dalam { background: #3ebd93; height: 100%; }
+
+/* Form tambah tugas: flex membuat elemen berjajar rapi */
+.form-tambah { display: flex; flex-wrap: wrap; gap: 8px; }
+.form-tambah input[type="text"] { flex: 1 1 100%; }   /* kolom judul selebar penuh */
+.form-tambah select, .form-tambah input[type="date"] { flex: 1; }
+input, select { padding: 9px; border: 1px solid #cbd2d9; border-radius: 6px; font-size: 14px; }
+button { cursor: pointer; border: none; font-size: 14px; }
+.btn-tambah { background: #3366ff; color: white; padding: 9px 18px; border-radius: 6px; }
+
+/* Tombol filter; kelas "aktif" menandai filter yang sedang dipilih */
+.filter { display: flex; gap: 8px; margin-bottom: 14px; }
+.btn-filter { background: white; padding: 7px 14px; border-radius: 20px; border: 1px solid #cbd2d9; }
+.btn-filter.aktif { background: #3366ff; color: white; border-color: #3366ff; }
+
+/* Daftar tugas */
+ul { list-style: none; }
+.tugas-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-left: 5px solid #cbd2d9;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Warna garis kiri sesuai prioritas */
+.prioritas-tinggi { border-left-color: #e12d39; }
+.prioritas-sedang { border-left-color: #f0b429; }
+.prioritas-rendah { border-left-color: #3ebd93; }
+
+.isi { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.info { font-size: 12px; color: #7b8794; }
+.btn-ikon { background: none; font-size: 20px; }
+
+/* Tugas selesai: teks dicoret dan diabu-abukan */
+.tugas-item.selesai .judul { text-decoration: line-through; color: #9aa5b1; }
+.terlambat { color: #e12d39; font-weight: bold; margin-left: 6px; }
+.kosong { text-align: center; color: #7b8794; padding: 20px; }
