@@ -1,0 +1,3 @@
+# Daftar library Python yang dibutuhkan proyek ini.
+# Install semuanya sekaligus dengan: pip install -r requirements.txt
+Flask>=3.0
